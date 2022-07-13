@@ -9,3 +9,4 @@ lazy val root = (project in file("."))
 
 libraryDependencies += "com.lihaoyi" %% "requests" % "0.7.1"
 libraryDependencies += "com.typesafe.play" %% "play-json" % "2.9.2"
+libraryDependencies += "org.apache.spark" %% "spark-core" % "3.2.0"
