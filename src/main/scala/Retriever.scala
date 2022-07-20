@@ -47,7 +47,7 @@ object Retriever extends App {
   val openingPricesIBM = getOpeningPrices("IBM")
   val volatility = getVolatility(openingPricesIBM)
   val returnRate = getExpectedReturn(openingPricesIBM)
-  println(openingPricesIBM)
+  println(openingPricesIBM.length)
   println(volatility)
   println(returnRate)
 }
