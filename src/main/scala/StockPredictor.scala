@@ -9,7 +9,7 @@ import scala.util.Random
  * @param votality: the votality of the stock.
  */
 class StockPredictor(val name: String, currentPrice: Double, expectedReturn: Double, period: Double, votality: Double) {
-
+  val dt = 1/period
   /**
    * override toString so it will be easier to read
    * @return
@@ -23,8 +23,12 @@ class StockPredictor(val name: String, currentPrice: Double, expectedReturn: Dou
    * @return currentPrice + predicted change in price
    */
   def nextPrice(): Double ={
-    return currentPrice + (currentPrice * (expectedReturn * period + votality * math.sqrt(period) * Random.nextGaussian()))
+    return currentPrice + (currentPrice * ( (expectedReturn * dt) + (votality * math.sqrt(dt) * Random.nextGaussian()) ))
   }
 
 }
+
+/*
+https://scala-lang.org/api/3.x/scala/util/Random$.html#nextGaussian-999
+ */
 
