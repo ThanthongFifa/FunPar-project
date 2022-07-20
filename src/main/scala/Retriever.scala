@@ -5,7 +5,7 @@ import java.net.URL
 import java.io.File
 import scala.language.postfixOps
 
-object Predictor extends App {
+object Retriever extends App {
   // API key is limited to 500 requests per day, 5 per minute
   // https://www.alphavantage.co/documentation/
   // https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY_EXTENDED&symbol=IBM&interval=15min&slice=year1month1&apikey=E007RI6Q8GHF36VA
@@ -50,6 +50,4 @@ object Predictor extends App {
   println(openingPricesIBM)
   println(volatility)
   println(returnRate)
-
-
 }
