@@ -22,3 +22,5 @@ https://www.investopedia.com/articles/07/montecarlo.asp
 
 https://corpgov.law.harvard.edu/2019/08/18/making-sense-of-monte-carlo/
 
+https://scala-lang.org/api/3.x/scala/util/Random$.html#nextGaussian-999
+
