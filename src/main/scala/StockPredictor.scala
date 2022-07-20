@@ -1,9 +1,10 @@
-import scala.util.Random
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.duration.Duration
+import scala.util.{Failure, Random, Success}
 import scala.concurrent.{Await, Future, Promise}
 
 /**
  * The class that will take value below to simulate the movement of a stock for the next <period> days.
- *
  * @param name           : this discribe the name of the stock.
  * @param currentPrice   : starting price (today price).
  * @param expectedReturn : expected ravenue of this stock.
@@ -15,7 +16,6 @@ class StockPredictor(val name: String, currentPrice: Double, expectedReturn: Dou
 
   /**
    * override toString so it will be easier to read
-   *
    * @return
    */
   override def toString: String = {
@@ -35,10 +35,11 @@ class StockPredictor(val name: String, currentPrice: Double, expectedReturn: Dou
   }
 
   /**
-   * Generate nest n price
+   * Generate next n price
    * @return
    */
   def prices(): List[Double] = {
+    // I Love LazyList
     def priceList: LazyList[Double] = {
       def from(i: Double): LazyList[Double] = {
         i #:: from(nextPrice(i))
@@ -46,6 +47,21 @@ class StockPredictor(val name: String, currentPrice: Double, expectedReturn: Dou
       from(currentPrice)
     }
     priceList.take(period.toInt).toList
+  }
+
+  /**
+   * generate 1000 possibility of a stock price
+   * @return
+   */
+  def getMultiverseOfPrice(): List[List[Double]] = {
+    val futures: List[Future[List[Double]]] =
+      List.fill(1000)(Future {
+        prices()
+      })
+    val future: Future[List[List[Double]]] = Future.foldLeft(futures) (List[List[Double]]()) ((acc, e) => acc :+ e)
+
+    val f = Await.result(future, Duration.Inf)
+    f
   }
 
 }

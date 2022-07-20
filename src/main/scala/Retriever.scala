@@ -43,11 +43,11 @@ object Retriever extends App {
     val ror = prices.map(price => ((price-initPrice)/initPrice)*100)
     ror.sum/ror.length
   }
-
-  val openingPricesIBM = getOpeningPrices("IBM")
-  val volatility = getVolatility(openingPricesIBM)
-  val returnRate = getExpectedReturn(openingPricesIBM)
-  println(openingPricesIBM.length)
-  println(volatility)
-  println(returnRate)
+//
+//  val openingPricesIBM = getOpeningPrices("IBM")
+//  val volatility = getVolatility(openingPricesIBM)
+//  val returnRate = getExpectedReturn(openingPricesIBM)
+//  println(openingPricesIBM.length)
+//  println(volatility)
+//  println(returnRate)
 }
