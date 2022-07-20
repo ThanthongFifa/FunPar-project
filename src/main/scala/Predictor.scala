@@ -38,10 +38,18 @@ object Predictor extends App {
     math.sqrt(sd)/1000
   }
 
-//  val openingPricesIBM = getOpeningPrices("IBM")
-//  val volatility = getVolatility(openingPricesIBM)
-//  println(openingPricesIBM)
-//  println(volatility)
+  def getExpectedReturn(prices: scala.collection.Seq[Float]): Double = {
+    val initPrice = prices.head
+    val ror = prices.map(price => ((price-initPrice)/initPrice)*100)
+    ror.sum/ror.length
+  }
+
+  val openingPricesIBM = getOpeningPrices("IBM")
+  val volatility = getVolatility(openingPricesIBM)
+  val returnRate = getExpectedReturn(openingPricesIBM)
+  println(openingPricesIBM)
+  println(volatility)
+  println(returnRate)
 
 
 }
