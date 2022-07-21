@@ -12,18 +12,18 @@ import scala.concurrent.{Await, Future, Promise}
  * @param n         : the length of time in the future in days.
  */
 class StockPredictor(val name: String, currentPrice: Double, n: Double) {
-  val dt = 1 / n
-  val openingPrices = getOpeningPrices(name)
-  val votality = getVolatility(openingPrices)
-  val expectedReturn = getExpectedReturn(openingPrices)
-  val possiblePrice = getMultiverseOfPrice()
+  val dt: Double = 1 / n
+  val openingPrices: List[Float] = getOpeningPrices(name)
+  val volatility: Double = getVolatility(openingPrices)
+  val expectedReturn: Double = getExpectedReturn(openingPrices)
+  val possiblePrice: List[List[Double]] = getMultiverseOfPrice()
 
   /**
    * override toString so it will be easier to read
    * @return
    */
   override def toString: String = {
-    s"Name: $name \nCurrent Price: $currentPrice \nExpected Return: $expectedReturn \nTime Period: $n \nVotality: $votality"
+    s"Name: $name \nCurrent Price: $currentPrice \nExpected Return: $expectedReturn \nTime Period: $n \nVotality: $volatility"
   }
 
   /**
@@ -31,11 +31,11 @@ class StockPredictor(val name: String, currentPrice: Double, n: Double) {
    * @return currentPrice + predicted change in price
    */
   def nextPrice(): Double = {
-    currentPrice + (currentPrice * ((expectedReturn * dt) + (votality * math.sqrt(dt) * Random.nextGaussian())))
+    currentPrice + (currentPrice * ((expectedReturn * dt) + (volatility * math.sqrt(dt) * Random.nextGaussian())))
   }
 
   def nextPrice(cp: Double): Double = {
-    cp + (cp * ((expectedReturn * dt) + (votality * math.sqrt(dt) * Random.nextGaussian())))
+    cp + (cp * ((expectedReturn * dt) + (volatility * math.sqrt(dt) * Random.nextGaussian())))
   }
 
   /**
@@ -75,11 +75,21 @@ class StockPredictor(val name: String, currentPrice: Double, n: Double) {
    */
   def profitChance(margin: Double): Double ={
     def helper(price: Double, margin: Double): Double = {
-      if (price > currentPrice+(currentPrice*margin/100)){
-        1
-      } else {0}
+      if (price > currentPrice+(currentPrice*margin/100)) 1 else 0
     }
     val endPrice = possiblePrice.map(p => p.last).map(i => helper(i,margin))
+    endPrice.sum/endPrice.length
+  }
+
+  /**
+   * Calculate the possibility of losing money
+   * @return
+   */
+  def lossChance(): Double = {
+    def helper(price: Double): Double = {
+      if (price < currentPrice) 1 else 0
+    }
+    val endPrice = possiblePrice.map(p => p.last).map(i => helper(i))
     endPrice.sum/endPrice.length
   }
 
