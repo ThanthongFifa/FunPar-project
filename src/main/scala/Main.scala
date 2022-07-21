@@ -8,7 +8,11 @@ object Main {
     // dividend
     val INTC = new StockPredictor("INTC", 40.56, 252) //Intel
 
+    // value
+    val TSLA = new StockPredictor("TSLA", 742.50, 252) //Tesla
+
     IBM.report()
     INTC.report()
+    TSLA.report()
   }
 }

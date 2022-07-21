@@ -128,7 +128,7 @@ class StockPredictor(val name: String, currentPrice: Double, n: Double) {
     val avg = round(endPrice.sum/endPrice.length)
     report.println("     avg: " + avg)
     report.println("     min: " + pr._2)
-    report.println("Percent of making profit: " + profitChance(0)*100 + "%")
+    report.println("Percent of making profit: " + profitChance(1)*100 + "%")
     report.println("Percent of losing money: " + lossChance()*100 + "%")
     if (avg < currentPrice){
       report.println("Trend: down trend")

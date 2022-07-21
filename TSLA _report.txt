@@ -1,15 +1,15 @@
 ================= Basic Info ====================
-Name: IBM 
-Current Price: 130.88 
-Expected Return: 1.3666316270828247 
+Name: TSLA 
+Current Price: 742.5 
+Expected Return: 6.647368431091309 
 Time Period: 252.0 days 
-Volatility: 0.0038423859644273685
+Volatility: 0.02470691469799105
 ================= Predictions ====================
-Tomorrow price: 131.58
+Tomorrow price: 762.3
 Expected price for the period ended:
-     max: 514.72
-     avg: 508.72
-     min: 500.65
+     max: 562200.36
+     avg: 511736.53
+     min: 473311.0
 Percent of making profit: 100.0%
 Percent of losing money: 0.0%
 Trend: up trend

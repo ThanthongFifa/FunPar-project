@@ -7,9 +7,9 @@ Volatility: 0.001027202043636367
 ================= Predictions ====================
 Tomorrow price: 40.72
 Expected price for the period ended:
-     max: 106.94
-     avg: 106.67
-     min: 106.31
+     max: 107.09
+     avg: 106.66
+     min: 106.29
 Percent of making profit: 100.0%
 Percent of losing money: 0.0%
 Trend: up trend
