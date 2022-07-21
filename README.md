@@ -5,12 +5,12 @@
 - Lorenzo 
 
 ### Project description
-We want to do a stock price simulator using Geometric Brownian Motion(GBM). The project will be divided into 2 main parts. The first part is to work with stock API to get data from the stock market and process that data, then we will use that data to calculate a necessary value for GBM. the second part is to do GBM using Future.
+We want to do a stock price simulator using Geometric Brownian Motion(GBM) in functional style. The project will be divided into 2 main parts. The first part is to work with stock API to get data from the stock market and process that data, then we will use that data to calculate a necessary value for GBM. the second part is to do GBM using Future, and calculate useful value.
 
 ### Work distribution
   - Lorenzo: find good and free API that will provide with necessary data.
   
-  - Fifa: Do the GMB using Future
+  - Fifa: Do the GMB using Future, and calculate useful info for investing.
   
 Note Lorenzo's spend most time looking for and testing stock API that we can use in scala, so he have fewer commit.
 
