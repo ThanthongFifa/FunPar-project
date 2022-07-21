@@ -2,13 +2,13 @@
 object Main {
   def main(args: Array[String]): Unit = {
 
-    // low risk
+    // risky
     val IBM = new StockPredictor("IBM", 130.88, 252) //252 is number of working days
 
-    // high risk
-    val MRNA = new StockPredictor("MRNA", 166.89, 252) //Moderna
+    // dividend
+    val INTC = new StockPredictor("INTC", 40.56, 252) //Intel
 
     IBM.report()
-    MRNA.report()
+    INTC.report()
   }
 }

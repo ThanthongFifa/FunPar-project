@@ -1,0 +1,16 @@
+================= Basic Info ====================
+Name: INTC 
+Current Price: 40.56 
+Expected Return: 0.9725906252861023 
+Time Period: 252.0 days 
+Volatility: 0.001027202043636367
+================= Predictions ====================
+Tomorrow price: 40.72
+Expected price for the period ended:
+     max: 106.94
+     avg: 106.67
+     min: 106.31
+Percent of making profit: 100.0%
+Percent of losing money: 0.0%
+Trend: up trend
+==================================================

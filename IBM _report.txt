@@ -1,0 +1,16 @@
+================= Basic Info ====================
+Name: IBM 
+Current Price: 130.88 
+Expected Return: 1.3666316270828247 
+Time Period: 252.0 days 
+Volatility: 0.0038423859644273685
+================= Predictions ====================
+Tomorrow price: 131.53
+Expected price for the period ended:
+     max: 516.15
+     avg: 508.68
+     min: 502.97
+Percent of making profit: 100.0%
+Percent of losing money: 0.0%
+Trend: up trend
+==================================================

@@ -1,5 +1,6 @@
 import Retriever.{getExpectedReturn, getOpeningPrices, getVolatility}
 
+import java.io.PrintWriter
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
 import scala.util.{Failure, Random, Success}
@@ -24,7 +25,7 @@ class StockPredictor(val name: String, currentPrice: Double, n: Double) {
    * @return
    */
   override def toString: String = {
-    s"Name: $name \nCurrent Price: $currentPrice \nExpected Return: $expectedReturn \nTime Period: $n days \nVotality: $volatility"
+    s"Name: $name \nCurrent Price: $currentPrice \nExpected Return: $expectedReturn \nTime Period: $n days \nVolatility: $volatility"
   }
 
   /**
@@ -116,24 +117,26 @@ class StockPredictor(val name: String, currentPrice: Double, n: Double) {
    * make a simple report
    */
   def report(): Unit = {
-    println("================= Basic Info ====================")
-    println(this.toString)
-    println("================= Predictions ====================")
-    println("Tomorrow price: " + round(nextPrice()))
-    println("Expected price for the period ended:")
+    val report = new PrintWriter(s"$name _report.txt")
+    report.println("================= Basic Info ====================")
+    report.println(this.toString)
+    report.println("================= Predictions ====================")
+    report.println("Tomorrow price: " + round(nextPrice()))
+    report.println("Expected price for the period ended:")
     val pr = priceRange()
-    println("     max: " + pr._1)
+    report.println("     max: " + pr._1)
     val avg = round(endPrice.sum/endPrice.length)
-    println("     avg: " + avg)
-    println("     min: " + pr._2)
-    println("Percent of making profit: " + profitChance(0)*100 + "%")
-    println("Percent of losing money: " + lossChance()*100 + "%")
+    report.println("     avg: " + avg)
+    report.println("     min: " + pr._2)
+    report.println("Percent of making profit: " + profitChance(0)*100 + "%")
+    report.println("Percent of losing money: " + lossChance()*100 + "%")
     if (avg < currentPrice){
-      println("Trend: down trend")
+      report.println("Trend: down trend")
     } else {
-      println("Trend: up trend")
+      report.println("Trend: up trend")
     }
-    println("==================================================")
+    report.println("==================================================")
+    report.close()
   }
 
 
