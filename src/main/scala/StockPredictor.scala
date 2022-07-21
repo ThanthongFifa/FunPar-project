@@ -17,13 +17,14 @@ class StockPredictor(val name: String, currentPrice: Double, n: Double) {
   val volatility: Double = getVolatility(openingPrices)
   val expectedReturn: Double = getExpectedReturn(openingPrices)
   val possiblePrice: List[List[Double]] = getMultiverseOfPrice()
+  val endPrice = possiblePrice.map(p => p.last)
 
   /**
    * override toString so it will be easier to read
    * @return
    */
   override def toString: String = {
-    s"Name: $name \nCurrent Price: $currentPrice \nExpected Return: $expectedReturn \nTime Period: $n \nVotality: $volatility"
+    s"Name: $name \nCurrent Price: $currentPrice \nExpected Return: $expectedReturn \nTime Period: $n days \nVotality: $volatility"
   }
 
   /**
@@ -77,8 +78,8 @@ class StockPredictor(val name: String, currentPrice: Double, n: Double) {
     def helper(price: Double, margin: Double): Double = {
       if (price > currentPrice+(currentPrice*margin/100)) 1 else 0
     }
-    val endPrice = possiblePrice.map(p => p.last).map(i => helper(i,margin))
-    endPrice.sum/endPrice.length
+    val ep = endPrice.map(i => helper(i,margin))
+    ep.sum/ep.length
   }
 
   /**
@@ -89,9 +90,52 @@ class StockPredictor(val name: String, currentPrice: Double, n: Double) {
     def helper(price: Double): Double = {
       if (price < currentPrice) 1 else 0
     }
-    val endPrice = possiblePrice.map(p => p.last).map(i => helper(i))
-    endPrice.sum/endPrice.length
+    val ep = endPrice.map(i => helper(i))
+    ep.sum/ep.length
   }
+
+  /**
+   * get max and min price
+   * @return
+   */
+  def priceRange(): (Double,Double) = {
+    (round(endPrice.max),
+      round(endPrice.min))
+  }
+
+  /**
+   * round x to 2 decimal digits
+   * @param x
+   * @return
+   */
+  def round(x: Double): Double = {
+    BigDecimal(x).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble
+  }
+
+  /**
+   * make a simple report
+   */
+  def report(): Unit = {
+    println("================= Basic Info ====================")
+    println(this.toString)
+    println("================= Predictions ====================")
+    println("Tomorrow price: " + round(nextPrice()))
+    println("Expected price for the period ended:")
+    val pr = priceRange()
+    println("     max: " + pr._1)
+    val avg = round(endPrice.sum/endPrice.length)
+    println("     avg: " + avg)
+    println("     min: " + pr._2)
+    println("Percent of making profit: " + profitChance(0)*100 + "%")
+    println("Percent of losing money: " + lossChance()*100 + "%")
+    if (avg < currentPrice){
+      println("Trend: down trend")
+    } else {
+      println("Trend: up trend")
+    }
+    println("==================================================")
+  }
+
 
 }
 
