@@ -8,9 +8,9 @@
 We want to do a stock price simulator using Geometric Brownian Motion(GBM) in functional style. The project will be divided into 2 main parts. The first part is to work with stock API to get data from the stock market and process that data, then we will use that data to calculate a necessary value for GBM. the second part is to do GBM using Future, and calculate useful value.
 
 ### Work distribution
-  - Lorenzo: find good and free API that will provide with necessary data.
+  - Lorenzo: find good and free API that will provide necessary data.
   
-  - Fifa: Do the GMB using Future, and calculate useful info for investing.
+  - Fifa: Do the GMB using Future, and calculate useful info for investing then put them in a simpla report.
   
 Note Lorenzo's spend most time looking for and testing stock API that we can use in scala, so he have fewer commit.
 
@@ -23,4 +23,6 @@ https://www.investopedia.com/articles/07/montecarlo.asp
 https://corpgov.law.harvard.edu/2019/08/18/making-sense-of-monte-carlo/
 
 https://scala-lang.org/api/3.x/scala/util/Random$.html#nextGaussian-999
+
+https://otfried.org/scala/writing_files.html
 
