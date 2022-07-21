@@ -114,9 +114,9 @@ class StockPredictor(val name: String, currentPrice: Double, n: Double) {
   }
 
   /**
-   * make a simple report
+   * write a simple report to .txt file
    */
-  def report(): Unit = {
+  def writeReport(): Unit = {
     val report = new PrintWriter(s"$name _report.txt")
     report.println("================= Basic Info ====================")
     report.println(this.toString)
@@ -137,6 +137,30 @@ class StockPredictor(val name: String, currentPrice: Double, n: Double) {
     }
     report.println("==================================================")
     report.close()
+  }
+
+  /**
+   * print a simple report
+   */
+  def printReport(): Unit = {
+    println("================= Basic Info ====================")
+    println(this.toString)
+    println("================= Predictions ====================")
+    println("Tomorrow price: " + round(nextPrice()))
+    println("Expected price for the period ended:")
+    val pr = priceRange()
+    println("     max: " + pr._1)
+    val avg = round(endPrice.sum/endPrice.length)
+    println("     avg: " + avg)
+    println("     min: " + pr._2)
+    println("Percent of making profit: " + profitChance(1)*100 + "%")
+    println("Percent of losing money: " + lossChance()*100 + "%")
+    if (avg < currentPrice){
+      println("Trend: down trend")
+    } else {
+      println("Trend: up trend")
+    }
+    println("==================================================")
   }
 
 

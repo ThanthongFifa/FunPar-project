@@ -11,8 +11,12 @@ object Main {
     // value
     val TSLA = new StockPredictor("TSLA", 742.50, 252) //Tesla
 
-    IBM.report()
-    INTC.report()
-    TSLA.report()
+    IBM.printReport()
+    INTC.printReport()
+    TSLA.printReport()
+
+    //    IBM.writeReport()
+    //    INTC.writeReport()
+    //    TSLA.writeReport()
   }
 }
