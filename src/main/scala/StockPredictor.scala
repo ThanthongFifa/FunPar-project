@@ -9,20 +9,21 @@ import scala.concurrent.{Await, Future, Promise}
  * The class that will take value below to simulate the movement of a stock for the next <period> days.
  * @param name           : this discribe the name of the stock.
  * @param currentPrice   : starting price (today price).
- * @param period         : the length of time in the future in days.
+ * @param n         : the length of time in the future in days.
  */
-class StockPredictor(val name: String, currentPrice: Double, period: Double) {
-  val dt = 1 / period
+class StockPredictor(val name: String, currentPrice: Double, n: Double) {
+  val dt = 1 / n
   val openingPrices = getOpeningPrices(name)
   val votality = getVolatility(openingPrices)
   val expectedReturn = getExpectedReturn(openingPrices)
+  val possiblePrice = getMultiverseOfPrice()
 
   /**
    * override toString so it will be easier to read
    * @return
    */
   override def toString: String = {
-    s"Name: $name \nCurrent Price: $currentPrice \nExpected Return: $expectedReturn \nTime Period: $period \nVotality: $votality"
+    s"Name: $name \nCurrent Price: $currentPrice \nExpected Return: $expectedReturn \nTime Period: $n \nVotality: $votality"
   }
 
   /**
@@ -49,11 +50,11 @@ class StockPredictor(val name: String, currentPrice: Double, period: Double) {
       }
       from(currentPrice)
     }
-    priceList.take(period.toInt).toList
+    priceList.take(n.toInt).toList
   }
 
   /**
-   * generate 1000 possibility of a stock price
+   * generate 1000 possibility of a stock price for the next n days
    * @return
    */
   def getMultiverseOfPrice(): List[List[Double]] = {
@@ -65,6 +66,21 @@ class StockPredictor(val name: String, currentPrice: Double, period: Double) {
 
     val f = Await.result(future, Duration.Inf)
     f
+  }
+
+  /**
+   * Calculate the possibility of making profit of $margin
+   * @param margin: margin of profit
+   * @return
+   */
+  def profitChance(margin: Double): Double ={
+    def helper(price: Double, margin: Double): Double = {
+      if (price > currentPrice+(currentPrice*margin/100)){
+        1
+      } else {0}
+    }
+    val endPrice = possiblePrice.map(p => p.last).map(i => helper(i,margin))
+    endPrice.sum/endPrice.length
   }
 
 }

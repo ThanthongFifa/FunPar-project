@@ -27,7 +27,7 @@ object Retriever extends App {
       openingPricesMut += cols(1).toFloat
     }
     bufferedSource.close
-    openingPricesMut.toList
+    openingPricesMut.toList.reverse
   }
 
   def getVolatility(prices: scala.collection.Seq[Float]): Double = {
