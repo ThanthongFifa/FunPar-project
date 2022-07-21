@@ -15,8 +15,8 @@ object Main {
     INTC.printReport()
     TSLA.printReport()
 
-    //    IBM.writeReport()
-    //    INTC.writeReport()
-    //    TSLA.writeReport()
+//    IBM.writeReport()
+//    INTC.writeReport()
+//    TSLA.writeReport()
   }
 }
