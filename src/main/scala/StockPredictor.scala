@@ -14,11 +14,13 @@ import scala.concurrent.{Await, Future, Promise}
  */
 class StockPredictor(val name: String, currentPrice: Double, n: Double) {
   val dt: Double = 1 / n
-  val openingPrices: List[Float] = getOpeningPrices(name)
+  val temp: (List[Float], Int) = getOpeningPrices(name)
+  val openingPrices: List[Float] = temp._1
+  val tradeVolume: Int = temp._2
   val volatility: Double = getVolatility(openingPrices,n) // annual valatility
   val expectedReturn: Double = getExpectedReturn(openingPrices)
   val possiblePrice: List[List[Double]] = getMultiverseOfPrice()
-  val endPrice = possiblePrice.map(p => p.last)
+  val endPrice: List[Double] = possiblePrice.map(p => p.last)
 
   /**
    * override toString so it will be easier to read
@@ -122,6 +124,7 @@ class StockPredictor(val name: String, currentPrice: Double, n: Double) {
     report.println(this.toString)
     report.println("================= Predictions ====================")
     report.println("Note: predict from " + openingPrices.length + " days of data")
+    report.println("Total trading volume from data: " + tradeVolume)
     report.println("Tomorrow price: " + round(nextPrice()))
     report.println("Expected price for the period ended:")
     val pr = priceRange()
@@ -148,6 +151,7 @@ class StockPredictor(val name: String, currentPrice: Double, n: Double) {
     println(this.toString)
     println("================= Predictions ====================")
     println("Note: predict from " + openingPrices.length + " days of data")
+    println("Total trading volume from data: " + tradeVolume)
     println("Tomorrow price: " + round(nextPrice()))
     println("Expected price for the period ended:")
     val pr = priceRange()

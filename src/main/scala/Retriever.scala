@@ -20,25 +20,28 @@ object Retriever extends App {
   //  - Lorenzo, plz make this function return 1entry/day. currently return 1/15 mins *****Fixed
   //  - if possible make this concurrent
   //  - if possible, get other stock info like P/E, dividend, ect.
-  //  - and maybe calculate avg trade volume/day.
+  //  - and maybe calculate avg trade volume/day. *****DONE but i switch to total trade volume
   //  - Lastly, put those info in the report in StockPredictor
-  def getOpeningPrices(stock: String): List[Float] = {
+  def getOpeningPrices(stock: String): (List[Float],Int) = {
     val csv = downloadCsv(s"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY_EXTENDED&symbol=$stock&interval=15min&slice=year1month1&apikey=E007RI6Q8GHF36VA",
       s"$stock.csv")
 
     val bufferedSource = Source.fromFile(s"$stock.csv")
     var openingPricesMut = new ListBuffer[Float]()
     var date = ""
+    var totalTradeVolume = 0
     for (line <- bufferedSource.getLines.drop(1)) {
       val cols = line.split(",").map(_.trim)
       val thisDate = cols(0).split(" ")(0)
+      totalTradeVolume =  totalTradeVolume + cols.last.toInt
+      //println(totalTradeVolume)
       if (!thisDate.equals(date)) {
         openingPricesMut += cols(1).toFloat
         date = thisDate
       }
     }
     bufferedSource.close
-    openingPricesMut.toList.reverse
+    (openingPricesMut.toList.reverse,totalTradeVolume)
   }
 
   def getVolatility(prices: scala.collection.Seq[Float], n: Double): Double = {
