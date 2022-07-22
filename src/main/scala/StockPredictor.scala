@@ -15,7 +15,7 @@ import scala.concurrent.{Await, Future, Promise}
 class StockPredictor(val name: String, currentPrice: Double, n: Double) {
   val dt: Double = 1 / n
   val openingPrices: List[Float] = getOpeningPrices(name)
-  val volatility: Double = getVolatility(openingPrices)
+  val volatility: Double = getVolatility(openingPrices,n) // annual valatility
   val expectedReturn: Double = getExpectedReturn(openingPrices)
   val possiblePrice: List[List[Double]] = getMultiverseOfPrice()
   val endPrice = possiblePrice.map(p => p.last)

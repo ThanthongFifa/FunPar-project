@@ -41,12 +41,13 @@ object Retriever extends App {
     openingPricesMut.toList.reverse
   }
 
-  def getVolatility(prices: scala.collection.Seq[Float]): Double = {
+  def getVolatility(prices: scala.collection.Seq[Float], n: Double): Double = {
+    //calculate n(num of day) Volatility
     val n = prices.length
     val mean = prices.sum/n
 
     val sd = prices.map(i => math.pow(i - mean,2)).sum/n
-    math.sqrt(sd)/1000
+    math.sqrt(sd) * math.sqrt(n)
   }
 
   def getExpectedReturn(prices: scala.collection.Seq[Float]): Double = {
