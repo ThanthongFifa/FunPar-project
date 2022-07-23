@@ -1,4 +1,4 @@
-import Retriever.{getExpectedReturn, getOpeningPrices, getVolatility}
+import Retriever.{getData, getExpectedReturn, getPERatio, getVolatility}
 
 import java.io.PrintWriter
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -14,13 +14,14 @@ import scala.concurrent.{Await, Future, Promise}
  */
 class StockPredictor(val name: String, currentPrice: Double, n: Double) {
   val dt: Double = 1 / n
-  val temp: (List[Float], Int) = getOpeningPrices(name)
+  val temp: (List[Float], Int) = getData(name)
   val openingPrices: List[Float] = temp._1
   val tradeVolume: Int = temp._2
-  val volatility: Double = getVolatility(openingPrices,n) // annual valatility
+  val volatility: Double = getVolatility(openingPrices,n) // annual volatility
   val expectedReturn: Double = getExpectedReturn(openingPrices)
   val possiblePrice: List[List[Double]] = getMultiverseOfPrice()
   val endPrice: List[Double] = possiblePrice.map(p => p.last)
+  val peRatio: Double = getPERatio(openingPrices, name)
 
   /**
    * override toString so it will be easier to read

@@ -8,20 +8,13 @@ import scala.language.postfixOps
 
 object Retriever extends App {
   // API key is limited to 500 requests per day, 5 per minute
-  // https://www.alphavantage.co/documentation/
-  // https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY_EXTENDED&symbol=IBM&interval=15min&slice=year1month1&apikey=E007RI6Q8GHF36VA
 
   // Download the csv file from the url
   def downloadCsv(url: String, filename: String): String = {
     new URL(url) #> new File(filename) !!
   }
 
-  // FIXME:
-  //  - if possible make this concurrent
-  //  - if possible, get other stock info like P/E, dividend, ect.
-  //  - Lastly, put those info in the report in StockPredictor
-
-  def getOpeningPrices(stock: String): (List[Float],Int) = {
+  def getData(stock: String): (List[Float],Int) = {
     if (!new java.io.File(s"$stock.csv").isFile){
       println("No file found, downloading new csv file...")
       val csv = downloadCsv(s"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=$stock&apikey=E007RI6Q8GHF36VA&datatype=csv",
@@ -54,5 +47,20 @@ object Retriever extends App {
     ror.sum/ror.length
   }
 
-  println(getOpeningPrices("IBM"))
+  def getPERatio(prices: scala.collection.Seq[Float], stock: String): Double = {
+    val n = prices.length
+    val avgPrice = prices.sum/n
+    if (stock == "IBM") {
+      avgPrice/6.6
+    } else if (stock == "INTC") {
+      avgPrice/1.46
+    } else if (stock == "AAPL") {
+      avgPrice/0.92
+    }
+    else {
+      println("No dividend data")
+      -1
+    }
+  }
+
 }
