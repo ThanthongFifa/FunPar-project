@@ -23,8 +23,12 @@ object Retriever extends App {
   //  - and maybe calculate avg trade volume/day. *****DONE but i switch to total trade volume
   //  - Lastly, put those info in the report in StockPredictor
   def getOpeningPrices(stock: String): (List[Float],Int) = {
-    val csv = downloadCsv(s"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY_EXTENDED&symbol=$stock&interval=15min&slice=year1month1&apikey=E007RI6Q8GHF36VA",
-      s"$stock.csv")
+    if (!new java.io.File(s"$stock.csv").isFile){
+      println("Downloading CSV")
+      val csv = downloadCsv(s"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY_EXTENDED&symbol=$stock&interval=15min&slice=year1month1&apikey=E007RI6Q8GHF36VA",
+        s"$stock.csv")
+
+    }
 
     val bufferedSource = Source.fromFile(s"$stock.csv")
     var openingPricesMut = new ListBuffer[Float]()
@@ -58,4 +62,6 @@ object Retriever extends App {
     val ror = prices.map(price => ((price-initPrice)/initPrice)*100)
     ror.sum/ror.length
   }
+
+  getOpeningPrices("IBM")
 }
