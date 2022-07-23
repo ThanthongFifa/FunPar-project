@@ -25,9 +25,8 @@ object Retriever extends App {
   def getOpeningPrices(stock: String): (List[Float],Int) = {
     if (!new java.io.File(s"$stock.csv").isFile){
       println("Downloading CSV")
-      val csv = downloadCsv(s"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY_EXTENDED&symbol=$stock&interval=15min&slice=year1month1&apikey=E007RI6Q8GHF36VA",
+      val csv = downloadCsv(s"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=$stock&apikey=E007RI6Q8GHF36VA&datatype=csv",
         s"$stock.csv")
-
     }
 
     val bufferedSource = Source.fromFile(s"$stock.csv")
@@ -36,13 +35,8 @@ object Retriever extends App {
     var totalTradeVolume = 0
     for (line <- bufferedSource.getLines.drop(1)) {
       val cols = line.split(",").map(_.trim)
-      val thisDate = cols(0).split(" ")(0)
       totalTradeVolume =  totalTradeVolume + cols.last.toInt
-      //println(totalTradeVolume)
-      if (!thisDate.equals(date)) {
-        openingPricesMut += cols(1).toFloat
-        date = thisDate
-      }
+      openingPricesMut += cols(1).toFloat
     }
     bufferedSource.close
     (openingPricesMut.toList.reverse,totalTradeVolume)
@@ -63,5 +57,5 @@ object Retriever extends App {
     ror.sum/ror.length
   }
 
-  getOpeningPrices("IBM")
+  println(getOpeningPrices("IBM"))
 }
