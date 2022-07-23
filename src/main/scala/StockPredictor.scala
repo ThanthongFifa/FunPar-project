@@ -1,4 +1,4 @@
-import Retriever.{getData, getExpectedReturn, getPERatio, getVolatility}
+import Retriever.{getData, getDividend, getExpectedReturn, getVolatility}
 
 import java.io.PrintWriter
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -21,14 +21,15 @@ class StockPredictor(val name: String, currentPrice: Double, n: Double) {
   val expectedReturn: Double = getExpectedReturn(openingPrices)
   val possiblePrice: List[List[Double]] = getMultiverseOfPrice()
   val endPrice: List[Double] = possiblePrice.map(p => p.last)
-  val peRatio: Double = getPERatio(openingPrices, name)
+  val dividend: Double = getDividend(name)
+  val peRatio: Double = getPERatio(openingPrices)
 
   /**
    * override toString so it will be easier to read
    * @return
    */
   override def toString: String = {
-    s"Name: $name \nCurrent Price: $currentPrice \nExpected Return: $expectedReturn \nTime Period: $n days \nVolatility: $volatility"
+    s"Name: $name \nCurrent Price: $currentPrice \nExpected Return: $expectedReturn \nTime Period: $n days \nVolatility: $volatility\nDividend: $dividend\nP/E Ratio: $peRatio"
   }
 
   /**
@@ -119,24 +120,13 @@ class StockPredictor(val name: String, currentPrice: Double, n: Double) {
   /**
    * Calculates the PE Ratio
    * @param prices, stock
-   * @return -1 if no dividend data is available, PE Ratio if available
+   * @return 0 if there is no dividend data available
    */
-  // There was an issue with getting the api data in time as all services required me to sign up and wait for a manual email response which took too long.
-  // So I decided to hardcode the dividend values according to the examples we gave.
-  def getPERatio(prices: scala.collection.Seq[Float], stock: String): Double = {
+
+  def getPERatio(prices: scala.collection.Seq[Float]): Double = {
     val n = prices.length
     val avgPrice = prices.sum/n
-    if (stock == "IBM") {
-      avgPrice/6.6
-    } else if (stock == "INTC") {
-      avgPrice/1.46
-    } else if (stock == "AAPL") {
-      avgPrice/0.92
-    }
-    else {
-      println("No dividend data")
-      -1
-    }
+    avgPrice/dividend
   }
 
   /**
@@ -158,7 +148,6 @@ class StockPredictor(val name: String, currentPrice: Double, n: Double) {
     report.println("     min: " + pr._2)
     report.println("Percent of making profit: " + profitChance(1)*100 + "%")
     report.println("Percent of losing money: " + lossChance()*100 + "%")
-    report.println("P/E ratio: " + peRatio)
     if (avg < currentPrice){
       report.println("Trend: down trend")
     } else {
@@ -186,7 +175,6 @@ class StockPredictor(val name: String, currentPrice: Double, n: Double) {
     println("     min: " + pr._2)
     println("Percent of making profit: " + profitChance(1)*100 + "%")
     println("Percent of losing money: " + lossChance()*100 + "%")
-    println("P/E ratio: " + peRatio)
     if (avg < currentPrice){
       println("Trend: down trend")
     } else {

@@ -9,7 +9,7 @@ object Main {
     val INTC = new StockPredictor("INTC", 40.56, 252) //Intel
 
     // value
-    val AAPL = new StockPredictor("AAPL", 742.50, 252) //Tesla
+    val AAPL = new StockPredictor("AAPL", 742.50, 252) //Apple
 
     IBM.printReport()
     INTC.printReport()
