@@ -3,8 +3,8 @@ import Retriever.{getData, getDividend, getExpectedReturn, getVolatility}
 import java.io.PrintWriter
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
-import scala.util.{Failure, Random, Success}
-import scala.concurrent.{Await, Future, Promise}
+import scala.util.Random
+import scala.concurrent.{Await, Future}
 
 /**
  * The class that will take value below to simulate the movement of a stock for the next <period> days.
@@ -19,7 +19,7 @@ class StockPredictor(val name: String, currentPrice: Double, n: Double) {
   val tradeVolume: Int = temp._2
   val volatility: Double = getVolatility(openingPrices,n) // annual volatility
   val expectedReturn: Double = getExpectedReturn(openingPrices)
-  val possiblePrice: List[List[Double]] = getMultiverseOfPrice()
+  val possiblePrice: List[List[Double]] = getMultiverseOfPrice
   val endPrice: List[Double] = possiblePrice.map(p => p.last)
   val dividend: Double = getDividend(name)
   val peRatio: Double = getPERatio(openingPrices)
@@ -63,7 +63,7 @@ class StockPredictor(val name: String, currentPrice: Double, n: Double) {
    * generate 1000 possibility of a stock price for the next n days
    * @return
    */
-  def getMultiverseOfPrice(): List[List[Double]] = {
+  def getMultiverseOfPrice: List[List[Double]] = {
     val futures: List[Future[List[Double]]] =
       List.fill(1000)(Future {
         prices()
@@ -139,19 +139,19 @@ class StockPredictor(val name: String, currentPrice: Double, n: Double) {
     report.println("================= Predictions ====================")
     report.println("Note: predict from " + openingPrices.length + " days of data")
     report.println("Total trading volume from data: " + tradeVolume)
-    report.println("Tomorrow price: " + round(nextPrice()))
+    report.println("Tomorrow's price: " + round(nextPrice()))
     report.println("Expected price for the period ended:")
     val pr = priceRange()
     report.println("     max: " + pr._1)
     val avg = round(endPrice.sum/endPrice.length)
     report.println("     avg: " + avg)
     report.println("     min: " + pr._2)
-    report.println("Percent of making profit: " + profitChance(1)*100 + "%")
-    report.println("Percent of losing money: " + lossChance()*100 + "%")
+    report.println("Chance of making profit: " + profitChance(1)*100 + "%")
+    report.println("Chance of losing money: " + lossChance()*100 + "%")
     if (avg < currentPrice){
-      report.println("Trend: down trend")
+      report.println("Trend: downwards trend")
     } else {
-      report.println("Trend: up trend")
+      report.println("Trend: upwards trend")
     }
     report.println("==================================================")
     report.close()
@@ -166,19 +166,19 @@ class StockPredictor(val name: String, currentPrice: Double, n: Double) {
     println("================= Predictions ====================")
     println("Note: predict from " + openingPrices.length + " days of data")
     println("Total trading volume from data: " + tradeVolume)
-    println("Tomorrow price: " + round(nextPrice()))
+    println("Tomorrow's price: " + round(nextPrice()))
     println("Expected price for the period ended:")
     val pr = priceRange()
     println("     max: " + pr._1)
     val avg = round(endPrice.sum/endPrice.length)
     println("     avg: " + avg)
     println("     min: " + pr._2)
-    println("Percent of making profit: " + profitChance(1)*100 + "%")
-    println("Percent of losing money: " + lossChance()*100 + "%")
+    println("Chance of making profit: " + profitChance(1)*100 + "%")
+    println("Chance of losing money: " + lossChance()*100 + "%")
     if (avg < currentPrice){
-      println("Trend: down trend")
+      println("Trend: downwards trend")
     } else {
-      println("Trend: up trend")
+      println("Trend: upwards trend")
     }
     println("==================================================")
   }
