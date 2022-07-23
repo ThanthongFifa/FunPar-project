@@ -117,6 +117,29 @@ class StockPredictor(val name: String, currentPrice: Double, n: Double) {
   }
 
   /**
+   * Calculates the PE Ratio
+   * @param prices, stock
+   * @return -1 if no dividend data is available, PE Ratio if available
+   */
+  // There was an issue with getting the api data in time as all services required me to sign up and wait for a manual email response which took too long.
+  // So I decided to hardcode the dividend values according to the examples we gave.
+  def getPERatio(prices: scala.collection.Seq[Float], stock: String): Double = {
+    val n = prices.length
+    val avgPrice = prices.sum/n
+    if (stock == "IBM") {
+      avgPrice/6.6
+    } else if (stock == "INTC") {
+      avgPrice/1.46
+    } else if (stock == "AAPL") {
+      avgPrice/0.92
+    }
+    else {
+      println("No dividend data")
+      -1
+    }
+  }
+
+  /**
    * write a simple report to .txt file
    */
   def writeReport(): Unit = {
@@ -135,6 +158,7 @@ class StockPredictor(val name: String, currentPrice: Double, n: Double) {
     report.println("     min: " + pr._2)
     report.println("Percent of making profit: " + profitChance(1)*100 + "%")
     report.println("Percent of losing money: " + lossChance()*100 + "%")
+    report.println("P/E ratio: " + peRatio)
     if (avg < currentPrice){
       report.println("Trend: down trend")
     } else {
@@ -162,6 +186,7 @@ class StockPredictor(val name: String, currentPrice: Double, n: Double) {
     println("     min: " + pr._2)
     println("Percent of making profit: " + profitChance(1)*100 + "%")
     println("Percent of losing money: " + lossChance()*100 + "%")
+    println("P/E ratio: " + peRatio)
     if (avg < currentPrice){
       println("Trend: down trend")
     } else {

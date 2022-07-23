@@ -47,20 +47,4 @@ object Retriever extends App {
     ror.sum/ror.length
   }
 
-  def getPERatio(prices: scala.collection.Seq[Float], stock: String): Double = {
-    val n = prices.length
-    val avgPrice = prices.sum/n
-    if (stock == "IBM") {
-      avgPrice/6.6
-    } else if (stock == "INTC") {
-      avgPrice/1.46
-    } else if (stock == "AAPL") {
-      avgPrice/0.92
-    }
-    else {
-      println("No dividend data")
-      -1
-    }
-  }
-
 }
